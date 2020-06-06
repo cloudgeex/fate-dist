@@ -1,0 +1,44 @@
+{
+  "name": "fate-editor",
+  "version": "0.0.0-development",
+  "license": "MIT",
+  "description": "A rich text editor (wysiwyg) natively written for angular (>= v2) with footprint and flexibility in mind",
+  "homepage": "https://onaluf.github.io/fate",
+  "author": "Selim Arsever <selim@arsever.ch> (http://selim.arsever.ch/)",
+  "keywords": [
+    "angular",
+    "editor",
+    "wysiwyg",
+    "wysiwyg-editor",
+    "rich-text",
+    "rich-text-editor",
+    "bootstrap4",
+    "material",
+    "typescript"
+  ],
+  "private": false,
+  "peerDependencies": {
+    "@angular/common": "^9.1.0",
+    "@angular/core": "^9.1.0",
+    "@angular/forms": "^9.1.0",
+    "core-js": "^2.4.1",
+    "rxjs": "^6.5.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/onaluf/fate.git"
+  },
+  "dependencies": {
+    "tslib": "^1.11.1"
+  },
+  "main": "bundles/fate-editor.umd.js",
+  "module": "fesm5/fate-editor.js",
+  "es2015": "fesm2015/fate-editor.js",
+  "esm5": "esm5/fate-editor.js",
+  "esm2015": "esm2015/fate-editor.js",
+  "fesm5": "fesm5/fate-editor.js",
+  "fesm2015": "fesm2015/fate-editor.js",
+  "typings": "fate-editor.d.ts",
+  "metadata": "fate-editor.metadata.json",
+  "sideEffects": false
+}
