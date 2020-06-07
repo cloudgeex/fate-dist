@@ -3,25 +3,26 @@ import { Injectable } from '@angular/core';
 import * as i0 from "@angular/core";
 let FateIconService = class FateIconService {
     constructor() {
+        // font awesome
         this.iconMapping = {
-            'bold': '<i class="fas fa-bold"></i>',
-            'italic': '<i class="fas fa-italic"></i>',
-            'underline': '<i class="fas fa-underline"></i>',
-            'strike': '<i class="fas fa-strikethrough"></i>',
-            'subscript': '<i class="fas fa-subscript"></i>',
-            'superscript': '<i class="fas fa-superscript"></i>',
-            'indent': '<i class="fas fa-indent"></i>',
-            'outdent': '<i class="fas fa-outdent"></i>',
-            'ordered': '<i class="fas fa-list-ol"></i>',
-            'unordered': '<i class="fas fa-list-ul"></i>',
-            'center': '<i class="fas fa-align-center"></i>',
-            'justify': '<i class="fas fa-align-justify"></i>',
-            'left': '<i class="fas fa-align-left"></i>',
-            'right': '<i class="fas fa-align-right"></i>',
-            'undo': '<i class="fas fa-undo-alt"></i>',
-            'redo': '<i class="fas fa-redo-alt"></i>',
-            'clean': '<i class="fas fa-eraser"></i>',
-            'link': '<i class="fas fa-link"></i>',
+            bold: 'bold',
+            italic: 'italic',
+            underline: 'underline',
+            strike: 'strikethrough',
+            subscript: 'subscript',
+            superscript: 'superscript',
+            indent: 'indent',
+            outdent: 'outdent',
+            ordered: 'list-ol',
+            unordered: 'list-ul',
+            center: 'align-center',
+            justify: 'align-justify',
+            left: 'align-left',
+            right: 'align-right',
+            undo: 'undo-alt',
+            redo: 'redo-alt',
+            clean: 'eraser',
+            link: 'link'
         };
     }
     getIcon(actionName) {
@@ -35,4 +36,4 @@ FateIconService = __decorate([
     })
 ], FateIconService);
 export { FateIconService };
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZmF0ZS1pY29uLnNlcnZpY2UuanMiLCJzb3VyY2VSb290Ijoibmc6Ly9mYXRlLWVkaXRvci8iLCJzb3VyY2VzIjpbImFwcC9mYXRlLWljb24uc2VydmljZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiO0FBQUEsT0FBTyxFQUFFLFVBQVUsRUFBRSxNQUFNLGVBQWUsQ0FBQzs7QUFPM0MsSUFBYSxlQUFlLEdBQTVCLE1BQWEsZUFBZTtJQUE1QjtRQUVZLGdCQUFXLEdBQVE7WUFDM0IsTUFBTSxFQUFHLDZCQUE2QjtZQUN0QyxRQUFRLEVBQUcsK0JBQStCO1lBQzFDLFdBQVcsRUFBRyxrQ0FBa0M7WUFDaEQsUUFBUSxFQUFHLHNDQUFzQztZQUNqRCxXQUFXLEVBQUksa0NBQWtDO1lBQ2pELGFBQWEsRUFBRyxvQ0FBb0M7WUFDcEQsUUFBUSxFQUFHLCtCQUErQjtZQUMxQyxTQUFTLEVBQUcsZ0NBQWdDO1lBQzVDLFNBQVMsRUFBRyxnQ0FBZ0M7WUFDNUMsV0FBVyxFQUFHLGdDQUFnQztZQUM5QyxRQUFRLEVBQUcscUNBQXFDO1lBQ2hELFNBQVMsRUFBRyxzQ0FBc0M7WUFDbEQsTUFBTSxFQUFHLG1DQUFtQztZQUM1QyxPQUFPLEVBQUcsb0NBQW9DO1lBQzlDLE1BQU0sRUFBRyxpQ0FBaUM7WUFDMUMsTUFBTSxFQUFHLGlDQUFpQztZQUMxQyxPQUFPLEVBQUcsK0JBQStCO1lBQ3pDLE1BQU0sRUFBRyw2QkFBNkI7U0FDdkMsQ0FBQztLQUtIO0lBSFEsT0FBTyxDQUFDLFVBQVU7UUFDdkIsT0FBTyxJQUFJLENBQUMsV0FBVyxDQUFDLFVBQVUsQ0FBQyxDQUFDO0lBQ3RDLENBQUM7Q0FDRixDQUFBOztBQTFCWSxlQUFlO0lBSDNCLFVBQVUsQ0FBQztRQUNWLFVBQVUsRUFBRSxNQUFNO0tBQ25CLENBQUM7R0FDVyxlQUFlLENBMEIzQjtTQTFCWSxlQUFlIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgSW5qZWN0YWJsZSB9IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuXG5pbXBvcnQgeyBGYXRlSWNvbiB9IGZyb20gJy4vZmF0ZS1pY29uLmludGVyZmFjZSc7XG5cbkBJbmplY3RhYmxlKHtcbiAgcHJvdmlkZWRJbjogJ3Jvb3QnXG59KVxuZXhwb3J0IGNsYXNzIEZhdGVJY29uU2VydmljZSBpbXBsZW1lbnRzIEZhdGVJY29uIHtcblxuICBwcm90ZWN0ZWQgaWNvbk1hcHBpbmc6IGFueSA9IHtcbiAgICAnYm9sZCcgOiAnPGkgY2xhc3M9XCJmYXMgZmEtYm9sZFwiPjwvaT4nLFxuICAgICdpdGFsaWMnIDogJzxpIGNsYXNzPVwiZmFzIGZhLWl0YWxpY1wiPjwvaT4nLFxuICAgICd1bmRlcmxpbmUnIDogJzxpIGNsYXNzPVwiZmFzIGZhLXVuZGVybGluZVwiPjwvaT4nLFxuICAgICdzdHJpa2UnIDogJzxpIGNsYXNzPVwiZmFzIGZhLXN0cmlrZXRocm91Z2hcIj48L2k+JyxcbiAgICAnc3Vic2NyaXB0JyA6ICAnPGkgY2xhc3M9XCJmYXMgZmEtc3Vic2NyaXB0XCI+PC9pPicsXG4gICAgJ3N1cGVyc2NyaXB0JyA6ICc8aSBjbGFzcz1cImZhcyBmYS1zdXBlcnNjcmlwdFwiPjwvaT4nLFxuICAgICdpbmRlbnQnIDogJzxpIGNsYXNzPVwiZmFzIGZhLWluZGVudFwiPjwvaT4nLFxuICAgICdvdXRkZW50JyA6ICc8aSBjbGFzcz1cImZhcyBmYS1vdXRkZW50XCI+PC9pPicsXG4gICAgJ29yZGVyZWQnIDogJzxpIGNsYXNzPVwiZmFzIGZhLWxpc3Qtb2xcIj48L2k+JyxcbiAgICAndW5vcmRlcmVkJyA6ICc8aSBjbGFzcz1cImZhcyBmYS1saXN0LXVsXCI+PC9pPicsXG4gICAgJ2NlbnRlcicgOiAnPGkgY2xhc3M9XCJmYXMgZmEtYWxpZ24tY2VudGVyXCI+PC9pPicsXG4gICAgJ2p1c3RpZnknIDogJzxpIGNsYXNzPVwiZmFzIGZhLWFsaWduLWp1c3RpZnlcIj48L2k+JyxcbiAgICAnbGVmdCcgOiAnPGkgY2xhc3M9XCJmYXMgZmEtYWxpZ24tbGVmdFwiPjwvaT4nLFxuICAgICdyaWdodCcgOiAnPGkgY2xhc3M9XCJmYXMgZmEtYWxpZ24tcmlnaHRcIj48L2k+JyxcbiAgICAndW5kbycgOiAnPGkgY2xhc3M9XCJmYXMgZmEtdW5kby1hbHRcIj48L2k+JyxcbiAgICAncmVkbycgOiAnPGkgY2xhc3M9XCJmYXMgZmEtcmVkby1hbHRcIj48L2k+JyxcbiAgICAnY2xlYW4nIDogJzxpIGNsYXNzPVwiZmFzIGZhLWVyYXNlclwiPjwvaT4nLFxuICAgICdsaW5rJyA6ICc8aSBjbGFzcz1cImZhcyBmYS1saW5rXCI+PC9pPicsXG4gIH07XG5cbiAgcHVibGljIGdldEljb24oYWN0aW9uTmFtZSk6IHN0cmluZyB7XG4gICAgcmV0dXJuIHRoaXMuaWNvbk1hcHBpbmdbYWN0aW9uTmFtZV07XG4gIH1cbn1cbiJdfQ==
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZmF0ZS1pY29uLnNlcnZpY2UuanMiLCJzb3VyY2VSb290Ijoibmc6Ly9mYXRlLWVkaXRvci8iLCJzb3VyY2VzIjpbImFwcC9mYXRlLWljb24uc2VydmljZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiO0FBQUEsT0FBTyxFQUFFLFVBQVUsRUFBRSxNQUFNLGVBQWUsQ0FBQzs7QUFPM0MsSUFBYSxlQUFlLEdBQTVCLE1BQWEsZUFBZTtJQUE1QjtRQUNFLGVBQWU7UUFDTCxnQkFBVyxHQUFRO1lBQzNCLElBQUksRUFBRSxNQUFNO1lBQ1osTUFBTSxFQUFFLFFBQVE7WUFDaEIsU0FBUyxFQUFFLFdBQVc7WUFDdEIsTUFBTSxFQUFFLGVBQWU7WUFDdkIsU0FBUyxFQUFFLFdBQVc7WUFDdEIsV0FBVyxFQUFFLGFBQWE7WUFDMUIsTUFBTSxFQUFFLFFBQVE7WUFDaEIsT0FBTyxFQUFFLFNBQVM7WUFDbEIsT0FBTyxFQUFFLFNBQVM7WUFDbEIsU0FBUyxFQUFFLFNBQVM7WUFDcEIsTUFBTSxFQUFFLGNBQWM7WUFDdEIsT0FBTyxFQUFFLGVBQWU7WUFDeEIsSUFBSSxFQUFFLFlBQVk7WUFDbEIsS0FBSyxFQUFFLGFBQWE7WUFDcEIsSUFBSSxFQUFFLFVBQVU7WUFDaEIsSUFBSSxFQUFFLFVBQVU7WUFDaEIsS0FBSyxFQUFFLFFBQVE7WUFDZixJQUFJLEVBQUUsTUFBTTtTQUNiLENBQUM7S0FLSDtJQUhRLE9BQU8sQ0FBQyxVQUFVO1FBQ3ZCLE9BQU8sSUFBSSxDQUFDLFdBQVcsQ0FBQyxVQUFVLENBQUMsQ0FBQztJQUN0QyxDQUFDO0NBQ0YsQ0FBQTs7QUExQlksZUFBZTtJQUgzQixVQUFVLENBQUM7UUFDVixVQUFVLEVBQUUsTUFBTTtLQUNuQixDQUFDO0dBQ1csZUFBZSxDQTBCM0I7U0ExQlksZUFBZSIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IEluamVjdGFibGUgfSBmcm9tICdAYW5ndWxhci9jb3JlJztcblxuaW1wb3J0IHsgRmF0ZUljb24gfSBmcm9tICcuL2ZhdGUtaWNvbi5pbnRlcmZhY2UnO1xuXG5ASW5qZWN0YWJsZSh7XG4gIHByb3ZpZGVkSW46ICdyb290J1xufSlcbmV4cG9ydCBjbGFzcyBGYXRlSWNvblNlcnZpY2UgaW1wbGVtZW50cyBGYXRlSWNvbiB7XG4gIC8vIGZvbnQgYXdlc29tZVxuICBwcm90ZWN0ZWQgaWNvbk1hcHBpbmc6IGFueSA9IHtcbiAgICBib2xkOiAnYm9sZCcsXG4gICAgaXRhbGljOiAnaXRhbGljJyxcbiAgICB1bmRlcmxpbmU6ICd1bmRlcmxpbmUnLFxuICAgIHN0cmlrZTogJ3N0cmlrZXRocm91Z2gnLFxuICAgIHN1YnNjcmlwdDogJ3N1YnNjcmlwdCcsXG4gICAgc3VwZXJzY3JpcHQ6ICdzdXBlcnNjcmlwdCcsXG4gICAgaW5kZW50OiAnaW5kZW50JyxcbiAgICBvdXRkZW50OiAnb3V0ZGVudCcsXG4gICAgb3JkZXJlZDogJ2xpc3Qtb2wnLFxuICAgIHVub3JkZXJlZDogJ2xpc3QtdWwnLFxuICAgIGNlbnRlcjogJ2FsaWduLWNlbnRlcicsXG4gICAganVzdGlmeTogJ2FsaWduLWp1c3RpZnknLFxuICAgIGxlZnQ6ICdhbGlnbi1sZWZ0JyxcbiAgICByaWdodDogJ2FsaWduLXJpZ2h0JyxcbiAgICB1bmRvOiAndW5kby1hbHQnLFxuICAgIHJlZG86ICdyZWRvLWFsdCcsXG4gICAgY2xlYW46ICdlcmFzZXInLFxuICAgIGxpbms6ICdsaW5rJ1xuICB9O1xuXG4gIHB1YmxpYyBnZXRJY29uKGFjdGlvbk5hbWUpOiBzdHJpbmcge1xuICAgIHJldHVybiB0aGlzLmljb25NYXBwaW5nW2FjdGlvbk5hbWVdO1xuICB9XG59XG4iXX0=

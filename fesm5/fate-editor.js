@@ -3,6 +3,7 @@ import { EventEmitter, Input, Output, Component, ɵɵdefineInjectable, Injectabl
 import { CommonModule } from '@angular/common';
 import { NG_VALUE_ACCESSOR, NgControl, FormsModule } from '@angular/forms';
 import { MatFormFieldControl, MatFormFieldModule } from '@angular/material/form-field';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Subject } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
@@ -642,25 +643,26 @@ var FateParserService = /** @class */ (function (_super) {
 
 var FateIconService = /** @class */ (function () {
     function FateIconService() {
+        // font awesome
         this.iconMapping = {
-            'bold': '<i class="fas fa-bold"></i>',
-            'italic': '<i class="fas fa-italic"></i>',
-            'underline': '<i class="fas fa-underline"></i>',
-            'strike': '<i class="fas fa-strikethrough"></i>',
-            'subscript': '<i class="fas fa-subscript"></i>',
-            'superscript': '<i class="fas fa-superscript"></i>',
-            'indent': '<i class="fas fa-indent"></i>',
-            'outdent': '<i class="fas fa-outdent"></i>',
-            'ordered': '<i class="fas fa-list-ol"></i>',
-            'unordered': '<i class="fas fa-list-ul"></i>',
-            'center': '<i class="fas fa-align-center"></i>',
-            'justify': '<i class="fas fa-align-justify"></i>',
-            'left': '<i class="fas fa-align-left"></i>',
-            'right': '<i class="fas fa-align-right"></i>',
-            'undo': '<i class="fas fa-undo-alt"></i>',
-            'redo': '<i class="fas fa-redo-alt"></i>',
-            'clean': '<i class="fas fa-eraser"></i>',
-            'link': '<i class="fas fa-link"></i>',
+            bold: 'bold',
+            italic: 'italic',
+            underline: 'underline',
+            strike: 'strikethrough',
+            subscript: 'subscript',
+            superscript: 'superscript',
+            indent: 'indent',
+            outdent: 'outdent',
+            ordered: 'list-ol',
+            unordered: 'list-ul',
+            center: 'align-center',
+            justify: 'align-justify',
+            left: 'align-left',
+            right: 'align-right',
+            undo: 'undo-alt',
+            redo: 'redo-alt',
+            clean: 'eraser',
+            link: 'link'
         };
     }
     FateIconService.prototype.getIcon = function (actionName) {
@@ -871,7 +873,7 @@ var FateUiComponent = /** @class */ (function () {
     FateUiComponent = __decorate([
         Component({
             selector: 'fate-ui',
-            template: "<div>\n  <ng-container *ngFor=\"let button of buttons\">\n    <a *ngIf=\"button !== 'separator'\" tabindex=\"0\" class=\"fate-ui-button\" [name]=\"button\" [ngClass]=\"{enabled: enabled[button], 'with-dropdown': dropdownAction === button}\" (click)=\"do($event, button)\">\n      <span *ngIf=\"icon.getIcon(button)\" [innerHtml]=\"icon.getIcon(button)\"></span>\n      <span *ngIf=\"!icon.getIcon(button)\">{{controller.getAction(button).label}}</span>\n      <span class=\"reader\">{{controller.getAction(button).name}}</span>\n    </a>\n    <div *ngIf=\"button === 'separator'\" class=\"fate-ui-separator\"></div>\n  </ng-container>\n  <div class=\"fate-ui-dropdown\" [ngClass]=\"{visible: dropdownAction}\">\n    <ng-template #dropdown></ng-template>\n  </div>\n</div>\n",
+            template: "<div>\n  <ng-container *ngFor=\"let button of buttons\">\n    <a *ngIf=\"button !== 'separator'\" tabindex=\"0\" class=\"fate-ui-button\" [name]=\"button\" [ngClass]=\"{enabled: enabled[button], 'with-dropdown': dropdownAction === button}\" (click)=\"do($event, button)\">\n      <span *ngIf=\"icon.getIcon(button) as iconName\" >\n        <fa-icon [icon]=\"['fas', iconName]\"></fa-icon>\n      </span>\n      <span *ngIf=\"!icon.getIcon(button)\">{{controller.getAction(button).label}}</span>\n      <span class=\"reader\">{{controller.getAction(button).name}}</span>\n    </a>\n    <div *ngIf=\"button === 'separator'\" class=\"fate-ui-separator\"></div>\n  </ng-container>\n  <div class=\"fate-ui-dropdown\" [ngClass]=\"{visible: dropdownAction}\">\n    <ng-template #dropdown></ng-template>\n  </div>\n</div>\n",
             styles: [":host{border:1px solid #ddd;border-bottom:0;display:block;box-sizing:border-box;padding:5px;background:#fff;color:#333;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;position:relative;overflow:visible}.fate-ui-separator{display:inline-block;width:2px;height:14px;vertical-align:middle;background-color:#ddd;border-radius:2px}.fate-ui-button{display:inline-block;height:25px;width:25px;text-align:center;line-height:25px;margin-bottom:3px;vertical-align:middle;cursor:pointer;font-size:14px;box-sizing:border-box;transition:background .3s;border-radius:3px;color:#333}.fate-ui-button.enabled,.fate-ui-button.with-dropdown,.fate-ui-button:active{background-color:#e5e5e5}.fate-ui-button:focus,.fate-ui-button:hover{background-color:#ccc}.fate-ui-button span.reader{display:none}.fate-ui-dropdown{opacity:0;pointer-events:none;z-index:1;font-size:14px;-webkit-user-select:all;-moz-user-select:all;-ms-user-select:all;user-select:all;box-sizing:border-box;border-radius:3px;background-color:#e5e5e5;position:absolute;padding:10px;border-bottom:1px solid #ccc;box-shadow:0 10px 10px -10px rgba(0,0,0,.3)}.fate-ui-dropdown.visible{opacity:1;pointer-events:all}"]
         })
     ], FateUiComponent);
@@ -1365,28 +1367,7 @@ var FateBootstrapComponent = /** @class */ (function () {
 var FateMaterialIconService = /** @class */ (function (_super) {
     __extends(FateMaterialIconService, _super);
     function FateMaterialIconService() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.iconMapping = {
-            'bold': '<i class="material-icons">format_bold</i>',
-            'italic': '<i class="material-icons">format_italic</i>',
-            'underline': '<i class="material-icons">format_underlined</i>',
-            'strike': '<i class="material-icons">format_strikethrough</i>',
-            'subscript': 'x<sub>2</sub>',
-            'superscript': 'x<sup>2</sup>',
-            'indent': '<i class="material-icons">format_indent_increase</i>',
-            'outdent': '<i class="material-icons">format_indent_decrease</i>',
-            'ordered': '<i class="material-icons">format_list_numbered</i>',
-            'unordered': '<i class="material-icons">format_list_bulleted</i>',
-            'center': '<i class="material-icons">format_align_center</i>',
-            'justify': '<i class="material-icons">format_align_justify</i>',
-            'left': '<i class="material-icons">format_align_left</i>',
-            'right': '<i class="material-icons">format_align_right</i>',
-            'undo': '<i class="material-icons">undo</i>',
-            'redo': '<i class="material-icons">redo</i>',
-            'clean': '<i class="material-icons">format_clear</i>',
-            'link': '<i class="material-icons">link</i>',
-        };
-        return _this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     FateMaterialIconService.ɵprov = ɵɵdefineInjectable({ factory: function FateMaterialIconService_Factory() { return new FateMaterialIconService(); }, token: FateMaterialIconService, providedIn: "root" });
     FateMaterialIconService = __decorate([
@@ -1621,19 +1602,15 @@ var FateModule = /** @class */ (function () {
                 FateInputComponent,
                 FateUiComponent,
                 FateBootstrapComponent,
-                FateLinkDropdownComponent,
+                FateLinkDropdownComponent
             ],
-            imports: [
-                CommonModule,
-                FormsModule,
-                MatFormFieldModule,
-            ],
+            imports: [CommonModule, FormsModule, MatFormFieldModule, FontAwesomeModule],
             exports: [
                 FateUiComponent,
                 FateInputComponent,
                 FateBootstrapComponent,
                 FateLinkDropdownComponent
-            ],
+            ]
         })
     ], FateModule);
     return FateModule;
@@ -1643,18 +1620,9 @@ var FateMaterialModule = /** @class */ (function () {
     }
     FateMaterialModule = __decorate([
         NgModule({
-            declarations: [
-                FateMaterialComponent,
-            ],
-            imports: [
-                CommonModule,
-                FormsModule,
-                MatFormFieldModule,
-                FateModule
-            ],
-            exports: [
-                FateMaterialComponent,
-            ]
+            declarations: [FateMaterialComponent],
+            imports: [CommonModule, FormsModule, MatFormFieldModule, FateModule],
+            exports: [FateMaterialComponent]
         })
     ], FateMaterialModule);
     return FateMaterialModule;
