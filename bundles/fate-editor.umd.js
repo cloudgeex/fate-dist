@@ -290,137 +290,137 @@
             // List of available commands, alphabetically
             // see https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand
             this.actionMapping = {
-                'bold': {
+                bold: {
                     command: 'bold',
                     name: 'Bold',
                     detect: exports.FateType.BOLD
                 },
-                'italic': {
+                italic: {
                     command: 'italic',
                     name: 'Italic',
                     detect: exports.FateType.ITALIC
                 },
-                'underline': {
+                underline: {
                     command: 'underline',
                     name: 'Underlined',
                     detect: exports.FateType.UNDERLINE
                 },
-                'strike': {
+                strike: {
                     command: 'strikeThrough',
                     name: 'Strike Through',
                     detect: exports.FateType.STRIKETHROUGH
                 },
-                'subscript': {
+                subscript: {
                     command: 'subscript',
                     name: 'Subscript',
                     label: 'sub',
                     detect: exports.FateType.SUBSCRIPT
                 },
-                'superscript': {
+                superscript: {
                     command: 'superscript',
                     name: 'Superscript',
                     label: 'sup',
                     detect: exports.FateType.SUPERSCRIPT
                 },
-                'heading1': {
+                heading1: {
                     command: 'formatBlock',
                     value: 'H1',
                     name: '1st Header',
                     label: 'h1',
                     detect: exports.FateType.HEADER1
                 },
-                'heading2': {
+                heading2: {
                     command: 'formatBlock',
                     value: 'H2',
                     name: '2nd Header',
                     label: 'h2',
                     detect: exports.FateType.HEADER2
                 },
-                'heading3': {
+                heading3: {
                     command: 'formatBlock',
                     value: 'H3',
                     name: '3rd Header',
                     label: 'h3',
                     detect: exports.FateType.HEADER3
                 },
-                'heading4': {
+                heading4: {
                     command: 'formatBlock',
                     value: 'H4',
                     name: '4th Header',
                     label: 'h4',
                     detect: exports.FateType.HEADER4
                 },
-                'heading5': {
+                heading5: {
                     command: 'formatBlock',
                     value: 'H5',
                     name: '5th Header',
                     label: 'h5',
                     detect: exports.FateType.HEADER5
                 },
-                'heading6': {
+                heading6: {
                     command: 'formatBlock',
                     value: 'H6',
                     name: '6th Header',
                     label: 'h6',
                     detect: exports.FateType.HEADER6
                 },
-                'normal': {
+                normal: {
                     command: 'formatBlock',
                     value: 'DIV',
                     name: 'Normal',
-                    label: 'p',
+                    label: 'p'
                 },
-                'indent': {
+                indent: {
                     command: 'indent',
-                    name: 'Indent',
+                    name: 'Indent'
                 },
-                'outdent': {
+                outdent: {
                     command: 'outdent',
-                    name: 'Outdent',
+                    name: 'Outdent'
                 },
-                'ordered': {
+                ordered: {
                     command: 'insertOrderedList',
                     name: 'Ordered List',
                     detect: exports.FateType.ORDERED_LIST
                 },
-                'unordered': {
+                unordered: {
                     command: 'insertUnorderedList',
                     name: 'Unorder List',
                     detect: exports.FateType.UNORDERED_LIST
                 },
-                'center': {
+                center: {
                     command: 'justifyCenter',
                     name: 'Center',
                     detect: exports.FateType.ALIGN_CENTER
                 },
-                'justify': {
+                justify: {
                     command: 'justifyFull',
                     name: 'Justify',
                     detect: exports.FateType.JUSTIFY
                 },
-                'left': {
+                left: {
                     command: 'justifyLeft',
                     name: 'Left',
                     detect: exports.FateType.ALIGN_LEFT
                 },
-                'right': {
+                right: {
                     command: 'justifyRight',
                     name: 'Right',
                     detect: exports.FateType.ALIGN_RIGHT
                 },
-                'undo': {
+                undo: {
                     command: 'undo',
-                    name: 'Undo',
+                    name: 'Undo'
                 },
-                'redo': {
+                redo: {
                     command: 'redo',
-                    name: 'Redo',
+                    name: 'Redo'
                 },
-                'clean': {
+                clean: {
                     command: 'removeFormat',
-                    name: 'Remove Formating',
+                    name: 'Remove Formating'
                 },
-                'link': {
+                link: {
                     command: 'createLink',
                     undo: 'unlink',
                     name: 'Link',
@@ -495,10 +495,12 @@
                 for (var nodes_1 = __values(nodes), nodes_1_1 = nodes_1.next(); !nodes_1_1.done; nodes_1_1 = nodes_1.next()) {
                     var node = nodes_1_1.value;
                     for (var action in this.actionMapping) {
-                        if (this.actionMapping[action].detect && this.actionMapping[action].detect === node.type) {
+                        if (this.actionMapping[action].detect &&
+                            this.actionMapping[action].detect === node.type) {
                             actions.push({ action: action, value: node.value });
                         }
-                        else if (this.actionMapping[action].detect && typeof this.actionMapping[action].detect === 'function') {
+                        else if (this.actionMapping[action].detect &&
+                            typeof this.actionMapping[action].detect === 'function') {
                             var detected = this.actionMapping[action].detect(node);
                             if (detected) {
                                 actions.push({ action: action, value: detected.value });
@@ -519,36 +521,55 @@
         FateControllerService.prototype.do = function (channel, action, value) {
             if (this.actionMapping[action].dropdown && !value) {
                 if (this.actionMapping[action].undo) {
-                    this.commandsPipe[channel].next({ name: this.actionMapping[action].undo, value: this.actionMapping[action].value || value });
+                    this.commandsPipe[channel].next({
+                        name: this.actionMapping[action].undo,
+                        value: this.actionMapping[action].value || value
+                    });
                 }
                 else {
                     throw new Error('Action "' + action + '"doesn\'t have a undo command');
                 }
             }
             else {
-                if (this.actionMapping[action].value && (typeof this.actionMapping[action].value === 'function')) {
-                    this.commandsPipe[channel].next({ name: this.actionMapping[action].command, value: this.actionMapping[action].value(value) });
+                if (this.actionMapping[action].value &&
+                    typeof this.actionMapping[action].value === 'function') {
+                    this.commandsPipe[channel].next({
+                        name: this.actionMapping[action].command,
+                        value: this.actionMapping[action].value(value)
+                    });
                 }
                 else {
-                    this.commandsPipe[channel].next({ name: this.actionMapping[action].command, value: this.actionMapping[action].value || value });
+                    this.commandsPipe[channel].next({
+                        name: this.actionMapping[action].command,
+                        value: this.actionMapping[action].value || value
+                    });
                 }
             }
         };
         FateControllerService.prototype.doInline = function (channel, action, value) {
             if (action.dropdown && !value) {
                 if (action.undo) {
-                    this.commandsPipe[channel].next({ name: action.undo, value: action.value || value });
+                    this.commandsPipe[channel].next({
+                        name: action.undo,
+                        value: action.value || value
+                    });
                 }
                 else {
                     throw new Error('Action "' + action + '"doesn\'t have a undo command');
                 }
             }
             else {
-                if (action.value && (typeof action.value === 'function')) {
-                    this.commandsPipe[channel].next({ name: action.command, value: action.value(value) });
+                if (action.value && typeof action.value === 'function') {
+                    this.commandsPipe[channel].next({
+                        name: action.command,
+                        value: action.value(value)
+                    });
                 }
                 else {
-                    this.commandsPipe[channel].next({ name: action.command, value: action.value || value });
+                    this.commandsPipe[channel].next({
+                        name: action.command,
+                        value: action.value || value
+                    });
                 }
             }
         };
@@ -1095,13 +1116,15 @@
     }());
 
     var FateInputComponent = /** @class */ (function () {
-        function FateInputComponent(el, controller, htmlParser, parser, sanitizer, factoryResolver) {
+        function FateInputComponent(el, controller, htmlParser, parser, sanitizer, factoryResolver, renderer, document) {
             this.el = el;
             this.controller = controller;
             this.htmlParser = htmlParser;
             this.parser = parser;
             this.sanitizer = sanitizer;
             this.factoryResolver = factoryResolver;
+            this.renderer = renderer;
+            this.document = document;
             this.uiId = 'default';
             this.placeholder = '';
             this.initialFocus = false;
@@ -1109,10 +1132,41 @@
             this.blur = new core.EventEmitter();
             this.empty = true;
             this.isFocused = false;
+            this._unlisteners = [];
             // implentation of ControlValueAccessor:
             this.changed = new Array();
         }
         FateInputComponent_1 = FateInputComponent;
+        Object.defineProperty(FateInputComponent.prototype, "editTargetElementRef", {
+            set: function (elementRef) {
+                this.editTarget = elementRef.nativeElement;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(FateInputComponent.prototype, "unlisteners", {
+            set: function (handler) {
+                this._unlisteners.push(handler);
+            },
+            enumerable: true,
+            configurable: true
+        });
+        FateInputComponent.prototype.unlisten = function () {
+            var e_1, _a;
+            try {
+                for (var _b = __values(this._unlisteners), _c = _b.next(); !_c.done; _c = _b.next()) {
+                    var handler = _c.value;
+                    handler();
+                }
+            }
+            catch (e_1_1) { e_1 = { error: e_1_1 }; }
+            finally {
+                try {
+                    if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+                }
+                finally { if (e_1) throw e_1.error; }
+            }
+        };
         FateInputComponent.prototype.reactToChanges = function () {
             var tree = this.htmlParser.parseElement(this.editTarget);
             var serializedTree = this.parser.serialize(tree);
@@ -1123,32 +1177,31 @@
         };
         FateInputComponent.prototype.ngAfterViewInit = function () {
             var _this = this;
-            this.editTarget = this.el.nativeElement.querySelector('.fate-edit-target');
             if (this.row) {
                 this.computeHeight();
             }
-            this.editTarget.addEventListener('click', function (event) {
+            this.unlisteners = this.renderer.listen(this.editTarget, 'click', function (event) {
                 console.debug('click');
                 // On click we save the text Selection
                 _this.saveSelection();
                 // We check if there is a dropdown matching this context
                 _this.checkForDropdownContext();
             });
-            this.editTarget.addEventListener('keyup', function (event) {
+            this.unlisteners = this.renderer.listen(this.editTarget, 'keyup', function (event) {
                 console.debug('keypressed');
                 // On click we save the text Selection
                 _this.saveSelection();
                 // We check if there is a dropdown matching this context
                 _this.checkForDropdownContext();
             });
-            this.editTarget.addEventListener('focus', function (event) {
+            this.unlisteners = this.renderer.listen(this.editTarget, 'focus', function (event) {
                 console.debug('(' + _this.uiId + ') focus');
                 // On focus we restore it
                 _this.restoreSelection();
                 _this.isFocused = true;
                 _this.focus.emit();
             });
-            this.editTarget.addEventListener('blur', function (event) {
+            this.unlisteners = this.renderer.listen(this.editTarget, 'blur', function (event) {
                 console.debug('(' + _this.uiId + ') blur');
                 _this.isFocused = false;
                 _this.blur.emit();
@@ -1162,7 +1215,7 @@
                     // this.dropdownComponent.destroy();
                 }
             });
-            this.editTarget.addEventListener('keydown', function (event) {
+            this.unlisteners = this.renderer.listen(this.editTarget, 'keydown', function (event) {
                 console.debug('keydown', event);
                 var stopDefault = function () {
                     event.preventDefault();
@@ -1249,22 +1302,22 @@
                     }
                 }
             });
-            this.editTarget.addEventListener('input', function (event) {
+            this.unlisteners = this.renderer.listen(this.editTarget, 'input', function (event) {
                 console.debug('value changed');
                 _this.checkEmpty();
                 _this.reactToChanges();
             });
-            var style = window.getComputedStyle(this.editTarget);
-            this.editTarget.style.minHeight = this.getHeight(2);
+            // const style: CSSStyleDeclaration = window.getComputedStyle(this.editTarget);
+            this.renderer.setStyle(this.editTarget, 'min-height', this.getHeight(2));
             if (this.initialFocus) {
-                this.editTarget.focus();
+                Promise.resolve(null).then(function () { return _this.editTarget.focus(); });
             }
         };
         FateInputComponent.prototype.ngOnChanges = function (changes) {
-            if (changes['uiId']) {
+            if (changes.uiId) {
                 this.subscribeToUi(this.uiId);
             }
-            if (changes['row']) {
+            if (changes.row) {
                 if (this.editTarget) {
                     this.computeHeight();
                 }
@@ -1274,13 +1327,14 @@
             if (this.uiSubscription) {
                 this.uiSubscription.unsubscribe();
             }
+            this.unlisten();
         };
         FateInputComponent.prototype.computeHeight = function () {
-            this.editTarget.style.height = this.getHeight(this.row);
+            this.renderer.setStyle(this.editTarget, 'height', this.getHeight(this.row));
         };
         FateInputComponent.prototype.checkEmpty = function () {
             if (this.editTarget.innerHTML === '') {
-                this.editTarget.innerHTML = '<br>';
+                this.renderer.setAttribute(this.editTarget, 'innerHTML', '<br>');
                 this.empty = true;
             }
             else if (this.editTarget.innerHTML === '<br>') {
@@ -1292,8 +1346,7 @@
         };
         FateInputComponent.prototype.getHeight = function (rowCount) {
             var style = window.getComputedStyle(this.editTarget);
-            var height = (this.editTarget.style.height =
-                parseInt(style.lineHeight, 10) * rowCount);
+            var height = parseInt(style.lineHeight, 10) * rowCount;
             if (style.boxSizing === 'border-box') {
                 height +=
                     parseInt(style.paddingTop, 10) +
@@ -1310,8 +1363,8 @@
                 this.uiSubscription.unsubscribe();
             }
             this.uiSubscription = this.controller.channel(uiId).subscribe(function (command) {
-                // if input is not on focus we save current focus:
-                var focus = document.activeElement;
+                // if input is not on focus we save current focused element:
+                var activeElement = _this.document.activeElement;
                 console.debug('(' + uiId + ') got command ' + command.name + '/' + command.value);
                 _this.restoreSelection();
                 if (command.name === 'insertHTML' && _this.selectionRange) {
@@ -1319,7 +1372,7 @@
                     // so first we delete the content
                     _this.selectionRange.deleteContents();
                     // insertHtml seems quite broken so we do it ourseleves
-                    _this.selectionRange.insertNode(document.createRange().createContextualFragment(command.value));
+                    _this.selectionRange.insertNode(_this.document.createRange().createContextualFragment(command.value));
                     // move cusor to the end of the newly inserted element
                     _this.selectionRange.collapse(false);
                     // Force the update of the model
@@ -1327,10 +1380,12 @@
                     _this.reactToChanges();
                 }
                 else {
-                    document.execCommand(command.name, false, command.value);
+                    _this.document.execCommand(command.name, false, command.value);
                 }
                 _this.saveSelection();
-                focus.focus();
+                if (activeElement instanceof HTMLElement) {
+                    activeElement.focus();
+                }
             });
         };
         FateInputComponent.prototype.saveSelection = function () {
@@ -1484,7 +1539,9 @@
             { type: FateHtmlParserService },
             { type: FateParserService },
             { type: platformBrowser.DomSanitizer },
-            { type: core.ComponentFactoryResolver }
+            { type: core.ComponentFactoryResolver },
+            { type: core.Renderer2 },
+            { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] }] }
         ]; };
         __decorate([
             core.Input()
@@ -1513,15 +1570,19 @@
                 static: true
             })
         ], FateInputComponent.prototype, "viewContainerRef", void 0);
+        __decorate([
+            core.ViewChild('editTarget', { static: true })
+        ], FateInputComponent.prototype, "editTargetElementRef", null);
         FateInputComponent = FateInputComponent_1 = __decorate([
             core.Component({
                 selector: 'fate-input',
-                template: "\n    <div\n      class=\"fate-inline-dropdown\"\n      [class.hidden]=\"!inlineAction\"\n      [class.contextual]=\"inlineAction?.display === 'contextual'\"\n      [style.top]=\"dropdownPostionTop\"\n      [style.left]=\"dropdownPostionLeft\"\n    >\n      <ng-template #dropdown></ng-template>\n    </div>\n    <div\n      [class]=\"'fate-edit-target ' + customClass\"\n      [ngClass]=\"{ empty: empty }\"\n      contenteditable=\"true\"\n      [title]=\"placeholder\"\n      [innerHtml]=\"content\"\n    ></div>\n  ",
+                template: "\n    <div\n      class=\"fate-inline-dropdown\"\n      [class.hidden]=\"!inlineAction\"\n      [class.contextual]=\"inlineAction?.display === 'contextual'\"\n      [style.top]=\"dropdownPostionTop\"\n      [style.left]=\"dropdownPostionLeft\"\n    >\n      <ng-template #dropdown></ng-template>\n    </div>\n    <div\n      #editTarget\n      [class]=\"'fate-edit-target ' + customClass\"\n      [ngClass]=\"{ empty: empty }\"\n      contenteditable=\"true\"\n      [title]=\"placeholder\"\n      [innerHtml]=\"content\"\n    ></div>\n  ",
                 providers: [
                     { provide: forms.NG_VALUE_ACCESSOR, useExisting: FateInputComponent_1, multi: true }
                 ],
                 styles: ["\n      :host div.fate-edit-target {\n        display: block;\n        padding: 10px;\n        border: 1px solid #ddd;\n        outline: 0;\n        resize: vertical;\n        overflow: auto;\n        background: #fff;\n        color: #000;\n        overflow: visible;\n      }\n      :host div.fate-edit-target.empty:not(:focus):before {\n        content: attr(title);\n        color: #636c72;\n      }\n      .fate-inline-dropdown {\n        border: 1px solid #ddd;\n        border-bottom: 0;\n      }\n      .fate-inline-dropdown.hidden {\n        display: none !important;\n      }\n      .fate-inline-dropdown.contextual {\n        position: absolute;\n        background: #fff;\n        box-shadow: 0 5px 30px -10px rgba(0, 0, 0, 0.4);\n        border-bottom: 1px solid #ccc;\n      }\n      :host {\n        margin-bottom: 10px;\n        /*position: relative;*/\n      }\n    "]
-            })
+            }),
+            __param(7, core.Inject(common.DOCUMENT))
         ], FateInputComponent);
         return FateInputComponent;
     }());

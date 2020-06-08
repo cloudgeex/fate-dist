@@ -1,6 +1,6 @@
 import { __decorate, __param } from 'tslib';
-import { EventEmitter, Input, Output, Component, ɵɵdefineInjectable, Injectable, ElementRef, ComponentFactoryResolver, HostListener, ViewChild, ViewContainerRef, Optional, Self, HostBinding, NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { EventEmitter, Input, Output, Component, ɵɵdefineInjectable, Injectable, ElementRef, ComponentFactoryResolver, HostListener, ViewChild, ViewContainerRef, Renderer2, Inject, Optional, Self, HostBinding, NgModule } from '@angular/core';
+import { DOCUMENT, CommonModule } from '@angular/common';
 import { NG_VALUE_ACCESSOR, NgControl, FormsModule } from '@angular/forms';
 import { MatFormFieldControl, MatFormFieldModule } from '@angular/material/form-field';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -75,137 +75,137 @@ let FateControllerService = class FateControllerService {
         // List of available commands, alphabetically
         // see https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand
         this.actionMapping = {
-            'bold': {
+            bold: {
                 command: 'bold',
                 name: 'Bold',
                 detect: FateType.BOLD
             },
-            'italic': {
+            italic: {
                 command: 'italic',
                 name: 'Italic',
                 detect: FateType.ITALIC
             },
-            'underline': {
+            underline: {
                 command: 'underline',
                 name: 'Underlined',
                 detect: FateType.UNDERLINE
             },
-            'strike': {
+            strike: {
                 command: 'strikeThrough',
                 name: 'Strike Through',
                 detect: FateType.STRIKETHROUGH
             },
-            'subscript': {
+            subscript: {
                 command: 'subscript',
                 name: 'Subscript',
                 label: 'sub',
                 detect: FateType.SUBSCRIPT
             },
-            'superscript': {
+            superscript: {
                 command: 'superscript',
                 name: 'Superscript',
                 label: 'sup',
                 detect: FateType.SUPERSCRIPT
             },
-            'heading1': {
+            heading1: {
                 command: 'formatBlock',
                 value: 'H1',
                 name: '1st Header',
                 label: 'h1',
                 detect: FateType.HEADER1
             },
-            'heading2': {
+            heading2: {
                 command: 'formatBlock',
                 value: 'H2',
                 name: '2nd Header',
                 label: 'h2',
                 detect: FateType.HEADER2
             },
-            'heading3': {
+            heading3: {
                 command: 'formatBlock',
                 value: 'H3',
                 name: '3rd Header',
                 label: 'h3',
                 detect: FateType.HEADER3
             },
-            'heading4': {
+            heading4: {
                 command: 'formatBlock',
                 value: 'H4',
                 name: '4th Header',
                 label: 'h4',
                 detect: FateType.HEADER4
             },
-            'heading5': {
+            heading5: {
                 command: 'formatBlock',
                 value: 'H5',
                 name: '5th Header',
                 label: 'h5',
                 detect: FateType.HEADER5
             },
-            'heading6': {
+            heading6: {
                 command: 'formatBlock',
                 value: 'H6',
                 name: '6th Header',
                 label: 'h6',
                 detect: FateType.HEADER6
             },
-            'normal': {
+            normal: {
                 command: 'formatBlock',
                 value: 'DIV',
                 name: 'Normal',
-                label: 'p',
+                label: 'p'
             },
-            'indent': {
+            indent: {
                 command: 'indent',
-                name: 'Indent',
+                name: 'Indent'
             },
-            'outdent': {
+            outdent: {
                 command: 'outdent',
-                name: 'Outdent',
+                name: 'Outdent'
             },
-            'ordered': {
+            ordered: {
                 command: 'insertOrderedList',
                 name: 'Ordered List',
                 detect: FateType.ORDERED_LIST
             },
-            'unordered': {
+            unordered: {
                 command: 'insertUnorderedList',
                 name: 'Unorder List',
                 detect: FateType.UNORDERED_LIST
             },
-            'center': {
+            center: {
                 command: 'justifyCenter',
                 name: 'Center',
                 detect: FateType.ALIGN_CENTER
             },
-            'justify': {
+            justify: {
                 command: 'justifyFull',
                 name: 'Justify',
                 detect: FateType.JUSTIFY
             },
-            'left': {
+            left: {
                 command: 'justifyLeft',
                 name: 'Left',
                 detect: FateType.ALIGN_LEFT
             },
-            'right': {
+            right: {
                 command: 'justifyRight',
                 name: 'Right',
                 detect: FateType.ALIGN_RIGHT
             },
-            'undo': {
+            undo: {
                 command: 'undo',
-                name: 'Undo',
+                name: 'Undo'
             },
-            'redo': {
+            redo: {
                 command: 'redo',
-                name: 'Redo',
+                name: 'Redo'
             },
-            'clean': {
+            clean: {
                 command: 'removeFormat',
-                name: 'Remove Formating',
+                name: 'Remove Formating'
             },
-            'link': {
+            link: {
                 command: 'createLink',
                 undo: 'unlink',
                 name: 'Link',
@@ -266,10 +266,12 @@ let FateControllerService = class FateControllerService {
         const actions = [];
         for (const node of nodes) {
             for (const action in this.actionMapping) {
-                if (this.actionMapping[action].detect && this.actionMapping[action].detect === node.type) {
+                if (this.actionMapping[action].detect &&
+                    this.actionMapping[action].detect === node.type) {
                     actions.push({ action: action, value: node.value });
                 }
-                else if (this.actionMapping[action].detect && typeof this.actionMapping[action].detect === 'function') {
+                else if (this.actionMapping[action].detect &&
+                    typeof this.actionMapping[action].detect === 'function') {
                     const detected = this.actionMapping[action].detect(node);
                     if (detected) {
                         actions.push({ action: action, value: detected.value });
@@ -282,36 +284,55 @@ let FateControllerService = class FateControllerService {
     do(channel, action, value) {
         if (this.actionMapping[action].dropdown && !value) {
             if (this.actionMapping[action].undo) {
-                this.commandsPipe[channel].next({ name: this.actionMapping[action].undo, value: this.actionMapping[action].value || value });
+                this.commandsPipe[channel].next({
+                    name: this.actionMapping[action].undo,
+                    value: this.actionMapping[action].value || value
+                });
             }
             else {
                 throw new Error('Action "' + action + '"doesn\'t have a undo command');
             }
         }
         else {
-            if (this.actionMapping[action].value && (typeof this.actionMapping[action].value === 'function')) {
-                this.commandsPipe[channel].next({ name: this.actionMapping[action].command, value: this.actionMapping[action].value(value) });
+            if (this.actionMapping[action].value &&
+                typeof this.actionMapping[action].value === 'function') {
+                this.commandsPipe[channel].next({
+                    name: this.actionMapping[action].command,
+                    value: this.actionMapping[action].value(value)
+                });
             }
             else {
-                this.commandsPipe[channel].next({ name: this.actionMapping[action].command, value: this.actionMapping[action].value || value });
+                this.commandsPipe[channel].next({
+                    name: this.actionMapping[action].command,
+                    value: this.actionMapping[action].value || value
+                });
             }
         }
     }
     doInline(channel, action, value) {
         if (action.dropdown && !value) {
             if (action.undo) {
-                this.commandsPipe[channel].next({ name: action.undo, value: action.value || value });
+                this.commandsPipe[channel].next({
+                    name: action.undo,
+                    value: action.value || value
+                });
             }
             else {
                 throw new Error('Action "' + action + '"doesn\'t have a undo command');
             }
         }
         else {
-            if (action.value && (typeof action.value === 'function')) {
-                this.commandsPipe[channel].next({ name: action.command, value: action.value(value) });
+            if (action.value && typeof action.value === 'function') {
+                this.commandsPipe[channel].next({
+                    name: action.command,
+                    value: action.value(value)
+                });
             }
             else {
-                this.commandsPipe[channel].next({ name: action.command, value: action.value || value });
+                this.commandsPipe[channel].next({
+                    name: action.command,
+                    value: action.value || value
+                });
             }
         }
     }
@@ -830,13 +851,15 @@ FateUiComponent = __decorate([
 
 var FateInputComponent_1;
 let FateInputComponent = FateInputComponent_1 = class FateInputComponent {
-    constructor(el, controller, htmlParser, parser, sanitizer, factoryResolver) {
+    constructor(el, controller, htmlParser, parser, sanitizer, factoryResolver, renderer, document) {
         this.el = el;
         this.controller = controller;
         this.htmlParser = htmlParser;
         this.parser = parser;
         this.sanitizer = sanitizer;
         this.factoryResolver = factoryResolver;
+        this.renderer = renderer;
+        this.document = document;
         this.uiId = 'default';
         this.placeholder = '';
         this.initialFocus = false;
@@ -844,8 +867,20 @@ let FateInputComponent = FateInputComponent_1 = class FateInputComponent {
         this.blur = new EventEmitter();
         this.empty = true;
         this.isFocused = false;
+        this._unlisteners = [];
         // implentation of ControlValueAccessor:
         this.changed = new Array();
+    }
+    set editTargetElementRef(elementRef) {
+        this.editTarget = elementRef.nativeElement;
+    }
+    set unlisteners(handler) {
+        this._unlisteners.push(handler);
+    }
+    unlisten() {
+        for (const handler of this._unlisteners) {
+            handler();
+        }
     }
     reactToChanges() {
         const tree = this.htmlParser.parseElement(this.editTarget);
@@ -856,32 +891,31 @@ let FateInputComponent = FateInputComponent_1 = class FateInputComponent {
         this.subscribeToUi(this.uiId);
     }
     ngAfterViewInit() {
-        this.editTarget = this.el.nativeElement.querySelector('.fate-edit-target');
         if (this.row) {
             this.computeHeight();
         }
-        this.editTarget.addEventListener('click', (event) => {
+        this.unlisteners = this.renderer.listen(this.editTarget, 'click', (event) => {
             console.debug('click');
             // On click we save the text Selection
             this.saveSelection();
             // We check if there is a dropdown matching this context
             this.checkForDropdownContext();
         });
-        this.editTarget.addEventListener('keyup', (event) => {
+        this.unlisteners = this.renderer.listen(this.editTarget, 'keyup', (event) => {
             console.debug('keypressed');
             // On click we save the text Selection
             this.saveSelection();
             // We check if there is a dropdown matching this context
             this.checkForDropdownContext();
         });
-        this.editTarget.addEventListener('focus', (event) => {
+        this.unlisteners = this.renderer.listen(this.editTarget, 'focus', (event) => {
             console.debug('(' + this.uiId + ') focus');
             // On focus we restore it
             this.restoreSelection();
             this.isFocused = true;
             this.focus.emit();
         });
-        this.editTarget.addEventListener('blur', (event) => {
+        this.unlisteners = this.renderer.listen(this.editTarget, 'blur', (event) => {
             console.debug('(' + this.uiId + ') blur');
             this.isFocused = false;
             this.blur.emit();
@@ -895,7 +929,7 @@ let FateInputComponent = FateInputComponent_1 = class FateInputComponent {
                 // this.dropdownComponent.destroy();
             }
         });
-        this.editTarget.addEventListener('keydown', (event) => {
+        this.unlisteners = this.renderer.listen(this.editTarget, 'keydown', (event) => {
             console.debug('keydown', event);
             const stopDefault = () => {
                 event.preventDefault();
@@ -982,22 +1016,22 @@ let FateInputComponent = FateInputComponent_1 = class FateInputComponent {
                 }
             }
         });
-        this.editTarget.addEventListener('input', (event) => {
+        this.unlisteners = this.renderer.listen(this.editTarget, 'input', (event) => {
             console.debug('value changed');
             this.checkEmpty();
             this.reactToChanges();
         });
-        const style = window.getComputedStyle(this.editTarget);
-        this.editTarget.style.minHeight = this.getHeight(2);
+        // const style: CSSStyleDeclaration = window.getComputedStyle(this.editTarget);
+        this.renderer.setStyle(this.editTarget, 'min-height', this.getHeight(2));
         if (this.initialFocus) {
-            this.editTarget.focus();
+            Promise.resolve(null).then(() => this.editTarget.focus());
         }
     }
     ngOnChanges(changes) {
-        if (changes['uiId']) {
+        if (changes.uiId) {
             this.subscribeToUi(this.uiId);
         }
-        if (changes['row']) {
+        if (changes.row) {
             if (this.editTarget) {
                 this.computeHeight();
             }
@@ -1007,13 +1041,14 @@ let FateInputComponent = FateInputComponent_1 = class FateInputComponent {
         if (this.uiSubscription) {
             this.uiSubscription.unsubscribe();
         }
+        this.unlisten();
     }
     computeHeight() {
-        this.editTarget.style.height = this.getHeight(this.row);
+        this.renderer.setStyle(this.editTarget, 'height', this.getHeight(this.row));
     }
     checkEmpty() {
         if (this.editTarget.innerHTML === '') {
-            this.editTarget.innerHTML = '<br>';
+            this.renderer.setAttribute(this.editTarget, 'innerHTML', '<br>');
             this.empty = true;
         }
         else if (this.editTarget.innerHTML === '<br>') {
@@ -1025,8 +1060,7 @@ let FateInputComponent = FateInputComponent_1 = class FateInputComponent {
     }
     getHeight(rowCount) {
         const style = window.getComputedStyle(this.editTarget);
-        let height = (this.editTarget.style.height =
-            parseInt(style.lineHeight, 10) * rowCount);
+        let height = parseInt(style.lineHeight, 10) * rowCount;
         if (style.boxSizing === 'border-box') {
             height +=
                 parseInt(style.paddingTop, 10) +
@@ -1042,8 +1076,8 @@ let FateInputComponent = FateInputComponent_1 = class FateInputComponent {
             this.uiSubscription.unsubscribe();
         }
         this.uiSubscription = this.controller.channel(uiId).subscribe(command => {
-            // if input is not on focus we save current focus:
-            const focus = document.activeElement;
+            // if input is not on focus we save current focused element:
+            const activeElement = this.document.activeElement;
             console.debug('(' + uiId + ') got command ' + command.name + '/' + command.value);
             this.restoreSelection();
             if (command.name === 'insertHTML' && this.selectionRange) {
@@ -1051,7 +1085,7 @@ let FateInputComponent = FateInputComponent_1 = class FateInputComponent {
                 // so first we delete the content
                 this.selectionRange.deleteContents();
                 // insertHtml seems quite broken so we do it ourseleves
-                this.selectionRange.insertNode(document.createRange().createContextualFragment(command.value));
+                this.selectionRange.insertNode(this.document.createRange().createContextualFragment(command.value));
                 // move cusor to the end of the newly inserted element
                 this.selectionRange.collapse(false);
                 // Force the update of the model
@@ -1059,10 +1093,12 @@ let FateInputComponent = FateInputComponent_1 = class FateInputComponent {
                 this.reactToChanges();
             }
             else {
-                document.execCommand(command.name, false, command.value);
+                this.document.execCommand(command.name, false, command.value);
             }
             this.saveSelection();
-            focus.focus();
+            if (activeElement instanceof HTMLElement) {
+                activeElement.focus();
+            }
         });
     }
     saveSelection() {
@@ -1215,7 +1251,9 @@ FateInputComponent.ctorParameters = () => [
     { type: FateHtmlParserService },
     { type: FateParserService },
     { type: DomSanitizer },
-    { type: ComponentFactoryResolver }
+    { type: ComponentFactoryResolver },
+    { type: Renderer2 },
+    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
 ];
 __decorate([
     Input()
@@ -1244,6 +1282,9 @@ __decorate([
         static: true
     })
 ], FateInputComponent.prototype, "viewContainerRef", void 0);
+__decorate([
+    ViewChild('editTarget', { static: true })
+], FateInputComponent.prototype, "editTargetElementRef", null);
 FateInputComponent = FateInputComponent_1 = __decorate([
     Component({
         selector: 'fate-input',
@@ -1258,6 +1299,7 @@ FateInputComponent = FateInputComponent_1 = __decorate([
       <ng-template #dropdown></ng-template>
     </div>
     <div
+      #editTarget
       [class]="'fate-edit-target ' + customClass"
       [ngClass]="{ empty: empty }"
       contenteditable="true"
@@ -1302,7 +1344,8 @@ FateInputComponent = FateInputComponent_1 = __decorate([
         /*position: relative;*/
       }
     `]
-    })
+    }),
+    __param(7, Inject(DOCUMENT))
 ], FateInputComponent);
 
 var FateBootstrapComponent_1;
