@@ -16,6 +16,7 @@ export declare class FateInputComponent implements ControlValueAccessor, OnChang
     row: number;
     customClass: string;
     placeholder: string;
+    initialFocus: boolean;
     focus: EventEmitter<void>;
     blur: EventEmitter<void>;
     viewContainerRef: ViewContainerRef;

@@ -839,6 +839,7 @@ let FateInputComponent = FateInputComponent_1 = class FateInputComponent {
         this.factoryResolver = factoryResolver;
         this.uiId = 'default';
         this.placeholder = '';
+        this.initialFocus = false;
         this.focus = new EventEmitter();
         this.blur = new EventEmitter();
         this.empty = true;
@@ -917,17 +918,20 @@ let FateInputComponent = FateInputComponent_1 = class FateInputComponent {
             //
             // Note: It may make sense to delete the selection for normal text
             // input too but for now we only do it on deletion.
-            if (event.key === 'Backspace' || event.key === 'Delete' && this.selectionRange) {
+            if (event.key === 'Backspace' ||
+                (event.key === 'Delete' && this.selectionRange)) {
                 const node = this.selectionRange.commonAncestorContainer;
                 console.debug('Deletion', node);
-                if (node instanceof HTMLElement && !node.isContentEditable) {
+                if (node instanceof HTMLElement &&
+                    !node.isContentEditable) {
                     // this is the case on firefox
                     console.debug('deleting inside un-editable block detected');
                     this.selectionRange.selectNode(node);
                     this.selectionRange.deleteContents();
                     stopDefaultAndForceUpdate();
                 }
-                else if (node.nodeName === '#text' && !node.parentElement.isContentEditable) {
+                else if (node.nodeName === '#text' &&
+                    !node.parentElement.isContentEditable) {
                     // this is the case on webkit
                     console.debug('deleting inside un-editable block detected');
                     this.selectionRange.selectNode(node.parentElement);
@@ -952,7 +956,8 @@ let FateInputComponent = FateInputComponent_1 = class FateInputComponent {
                 const node = this.selectionRange.commonAncestorContainer;
                 if (this.selectionRange.collapsed === true &&
                     this.selectionRange.endContainer.nodeName === '#text' &&
-                    this.selectionRange.endOffset === this.selectionRange.endContainer.length &&
+                    this.selectionRange.endOffset ===
+                        this.selectionRange.endContainer.length &&
                     node.nextSibling instanceof HTMLElement &&
                     !node.nextSibling.isContentEditable) {
                     node.nextSibling.remove();
@@ -984,6 +989,9 @@ let FateInputComponent = FateInputComponent_1 = class FateInputComponent {
         });
         const style = window.getComputedStyle(this.editTarget);
         this.editTarget.style.minHeight = this.getHeight(2);
+        if (this.initialFocus) {
+            this.editTarget.focus();
+        }
     }
     ngOnChanges(changes) {
         if (changes['uiId']) {
@@ -1017,9 +1025,14 @@ let FateInputComponent = FateInputComponent_1 = class FateInputComponent {
     }
     getHeight(rowCount) {
         const style = window.getComputedStyle(this.editTarget);
-        let height = this.editTarget.style.height = (parseInt(style.lineHeight, 10) * rowCount);
+        let height = (this.editTarget.style.height =
+            parseInt(style.lineHeight, 10) * rowCount);
         if (style.boxSizing === 'border-box') {
-            height += parseInt(style.paddingTop, 10) + parseInt(style.paddingBottom, 10) + parseInt(style.borderTopWidth, 10) + parseInt(style.borderBottomWidth, 10);
+            height +=
+                parseInt(style.paddingTop, 10) +
+                    parseInt(style.paddingBottom, 10) +
+                    parseInt(style.borderTopWidth, 10) +
+                    parseInt(style.borderBottomWidth, 10);
         }
         return height + 'px';
     }
@@ -1028,7 +1041,7 @@ let FateInputComponent = FateInputComponent_1 = class FateInputComponent {
         if (this.uiSubscription) {
             this.uiSubscription.unsubscribe();
         }
-        this.uiSubscription = this.controller.channel(uiId).subscribe((command) => {
+        this.uiSubscription = this.controller.channel(uiId).subscribe(command => {
             // if input is not on focus we save current focus:
             const focus = document.activeElement;
             console.debug('(' + uiId + ') got command ' + command.name + '/' + command.value);
@@ -1076,29 +1089,38 @@ let FateInputComponent = FateInputComponent_1 = class FateInputComponent {
     }
     selectionInEditableTarget() {
         const sel = window.getSelection();
-        const node = sel.getRangeAt && sel.rangeCount && sel.getRangeAt(0) && sel.getRangeAt(0).commonAncestorContainer;
-        return node && (node === this.editTarget || (node.parentElement.closest('.fate-edit-target') && (node.parentElement.closest('.fate-edit-target') === this.editTarget)));
+        const node = sel.getRangeAt &&
+            sel.rangeCount &&
+            sel.getRangeAt(0) &&
+            sel.getRangeAt(0).commonAncestorContainer;
+        return (node &&
+            (node === this.editTarget ||
+                (node.parentElement.closest('.fate-edit-target') &&
+                    node.parentElement.closest('.fate-edit-target') === this.editTarget)));
     }
     detectStyle() {
         let node = this.selectionRange.commonAncestorContainer;
-        if (!node || (!(node.parentElement.closest('.fate-edit-target') && node !== this.editTarget))) {
+        if (!node ||
+            !(node.parentElement.closest('.fate-edit-target') &&
+                node !== this.editTarget)) {
             // The current selection is not contained in the editable zone.
             // this is most likely due to the input being empty.
             return;
         }
         // special cases for FF when selection is obtained by double click:
-        if ((this.selectionRange.endOffset === 0) &&
-            (this.selectionRange.startContainer.nodeValue) &&
-            (this.selectionRange.startOffset === this.selectionRange.startContainer.nodeValue.length)) {
+        if (this.selectionRange.endOffset === 0 &&
+            this.selectionRange.startContainer.nodeValue &&
+            this.selectionRange.startOffset ===
+                this.selectionRange.startContainer.nodeValue.length) {
             node = this.selectionRange.startContainer.nextSibling;
         }
-        else if ((this.selectionRange.endOffset === 0) &&
-            (this.selectionRange.startOffset === 0)) {
+        else if (this.selectionRange.endOffset === 0 &&
+            this.selectionRange.startOffset === 0) {
             node = this.selectionRange.startContainer.parentElement;
         }
-        else if ((this.selectionRange.commonAncestorContainer === this.editTarget) &&
-            (this.selectionRange.startContainer === this.editTarget) &&
-            (this.selectionRange.endContainer === this.editTarget)) {
+        else if (this.selectionRange.commonAncestorContainer === this.editTarget &&
+            this.selectionRange.startContainer === this.editTarget &&
+            this.selectionRange.endContainer === this.editTarget) {
             node = this.selectionRange.commonAncestorContainer.childNodes[this.selectionRange.startOffset];
         }
         if (node && node !== this.editTarget) {
@@ -1128,7 +1150,8 @@ let FateInputComponent = FateInputComponent_1 = class FateInputComponent {
         const context = this.selectionRange.startContainer.textContent.substr(startPos, length);
         const inlineAction = this.controller.getInlineAction(context);
         if (inlineAction) {
-            if (!this.inlineAction || this.inlineAction.dropdown !== inlineAction.dropdown) {
+            if (!this.inlineAction ||
+                this.inlineAction.dropdown !== inlineAction.dropdown) {
                 this.inlineAction = inlineAction;
                 this.initDropdown(inlineAction, this.selectionRange.getBoundingClientRect());
             }
@@ -1151,7 +1174,7 @@ let FateInputComponent = FateInputComponent_1 = class FateInputComponent {
         const component = factory.create(this.viewContainerRef.parentInjector);
         if (component.instance.valueChange) {
             component.instance.value = actionComponent.matched;
-            component.instance.valueChange.subscribe((value) => {
+            component.instance.valueChange.subscribe(value => {
                 this.editTarget.focus();
                 const end = this.selectionRange.endOffset;
                 this.selectionRange.setStart(this.selectionRange.endContainer, end - actionComponent.matched.length);
@@ -1180,8 +1203,9 @@ let FateInputComponent = FateInputComponent_1 = class FateInputComponent {
             const end = range.endOffset;
             range.setStart(range.endContainer, end - this.inlineAction.matched.length);
             const boundingBox = range.getBoundingClientRect();
-            this.dropdownPostionTop = (boundingBox.top + boundingBox.height - parentOffsetBB.top) + 'px';
-            this.dropdownPostionLeft = (boundingBox.left - parentOffsetBB.left) + 'px';
+            this.dropdownPostionTop =
+                boundingBox.top + boundingBox.height - parentOffsetBB.top + 'px';
+            this.dropdownPostionLeft = boundingBox.left - parentOffsetBB.left + 'px';
         }
     }
 };
@@ -1206,6 +1230,9 @@ __decorate([
     Input()
 ], FateInputComponent.prototype, "placeholder", void 0);
 __decorate([
+    Input()
+], FateInputComponent.prototype, "initialFocus", void 0);
+__decorate([
     Output()
 ], FateInputComponent.prototype, "focus", void 0);
 __decorate([
@@ -1214,63 +1241,67 @@ __decorate([
 __decorate([
     ViewChild('dropdown', {
         read: ViewContainerRef,
-        static: true,
+        static: true
     })
 ], FateInputComponent.prototype, "viewContainerRef", void 0);
 FateInputComponent = FateInputComponent_1 = __decorate([
     Component({
         selector: 'fate-input',
         template: `
-    <div class="fate-inline-dropdown"
-         [class.hidden]="!inlineAction"
-         [class.contextual]="inlineAction?.display === 'contextual'"
-         [style.top]="dropdownPostionTop"
-         [style.left]="dropdownPostionLeft">
+    <div
+      class="fate-inline-dropdown"
+      [class.hidden]="!inlineAction"
+      [class.contextual]="inlineAction?.display === 'contextual'"
+      [style.top]="dropdownPostionTop"
+      [style.left]="dropdownPostionLeft"
+    >
       <ng-template #dropdown></ng-template>
     </div>
-    <div [class]="'fate-edit-target ' + customClass"
-         [ngClass]="{empty: empty}"
-         contenteditable="true"
-         [title]="placeholder"
-         [innerHtml]="content"></div>
+    <div
+      [class]="'fate-edit-target ' + customClass"
+      [ngClass]="{ empty: empty }"
+      contenteditable="true"
+      [title]="placeholder"
+      [innerHtml]="content"
+    ></div>
   `,
         providers: [
             { provide: NG_VALUE_ACCESSOR, useExisting: FateInputComponent_1, multi: true }
         ],
         styles: [`
-    :host div.fate-edit-target {
-      display: block;
-      padding: 10px;
-      border: 1px solid #DDD;
-      outline: 0;
-      resize: vertical;
-      overflow: auto;
-      background: #FFF;
-      color: #000;
-      overflow: visible;
-    }
-    :host div.fate-edit-target.empty:not(:focus):before {
-      content:attr(title);
-      color: #636c72;
-    }
-    .fate-inline-dropdown {
-      border: 1px solid #DDD;
-      border-bottom: 0;
-    }
-    .fate-inline-dropdown.hidden {
-      display: none !important;
-    }
-    .fate-inline-dropdown.contextual {
-      position: absolute;
-      background: #FFF;
-      box-shadow: 0 5px 30px -10px rgba(0,0,0,0.4);
-      border-bottom: 1px solid #CCC;
-    }
-    :host {
-      margin-bottom: 10px;
-      /*position: relative;*/
-    }
-  `]
+      :host div.fate-edit-target {
+        display: block;
+        padding: 10px;
+        border: 1px solid #ddd;
+        outline: 0;
+        resize: vertical;
+        overflow: auto;
+        background: #fff;
+        color: #000;
+        overflow: visible;
+      }
+      :host div.fate-edit-target.empty:not(:focus):before {
+        content: attr(title);
+        color: #636c72;
+      }
+      .fate-inline-dropdown {
+        border: 1px solid #ddd;
+        border-bottom: 0;
+      }
+      .fate-inline-dropdown.hidden {
+        display: none !important;
+      }
+      .fate-inline-dropdown.contextual {
+        position: absolute;
+        background: #fff;
+        box-shadow: 0 5px 30px -10px rgba(0, 0, 0, 0.4);
+        border-bottom: 1px solid #ccc;
+      }
+      :host {
+        margin-bottom: 10px;
+        /*position: relative;*/
+      }
+    `]
     })
 ], FateInputComponent);
 
