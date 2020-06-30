@@ -863,8 +863,8 @@ let FateInputComponent = FateInputComponent_1 = class FateInputComponent {
         this.uiId = 'default';
         this.placeholder = '';
         this.initialFocus = false;
-        this.focus = new EventEmitter();
-        this.blur = new EventEmitter();
+        this.focused = new EventEmitter();
+        this.blured = new EventEmitter();
         this.empty = true;
         this.isFocused = false;
         this._unlisteners = [];
@@ -913,12 +913,12 @@ let FateInputComponent = FateInputComponent_1 = class FateInputComponent {
             // On focus we restore it
             this.restoreSelection();
             this.isFocused = true;
-            this.focus.emit();
+            this.focused.emit();
         });
         this.unlisteners = this.renderer.listen(this.editTarget, 'blur', (event) => {
             console.debug('(' + this.uiId + ') blur');
             this.isFocused = false;
-            this.blur.emit();
+            this.blured.emit();
             this.saveSelection();
             if (this.dropdownComponent) {
                 setTimeout(() => {
@@ -1024,8 +1024,14 @@ let FateInputComponent = FateInputComponent_1 = class FateInputComponent {
         // const style: CSSStyleDeclaration = window.getComputedStyle(this.editTarget);
         this.renderer.setStyle(this.editTarget, 'min-height', this.getHeight(2));
         if (this.initialFocus) {
-            Promise.resolve(null).then(() => this.editTarget.focus());
+            this.focus();
         }
+    }
+    focus() {
+        Promise.resolve(null).then(() => this.editTarget.focus());
+    }
+    blur() {
+        Promise.resolve(null).then(() => this.editTarget.blur());
     }
     ngOnChanges(changes) {
         if (changes.uiId) {
@@ -1272,10 +1278,10 @@ __decorate([
 ], FateInputComponent.prototype, "initialFocus", void 0);
 __decorate([
     Output()
-], FateInputComponent.prototype, "focus", void 0);
+], FateInputComponent.prototype, "focused", void 0);
 __decorate([
     Output()
-], FateInputComponent.prototype, "blur", void 0);
+], FateInputComponent.prototype, "blured", void 0);
 __decorate([
     ViewChild('dropdown', {
         read: ViewContainerRef,

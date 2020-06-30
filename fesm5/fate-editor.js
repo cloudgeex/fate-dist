@@ -914,8 +914,8 @@ var FateInputComponent = /** @class */ (function () {
         this.uiId = 'default';
         this.placeholder = '';
         this.initialFocus = false;
-        this.focus = new EventEmitter();
-        this.blur = new EventEmitter();
+        this.focused = new EventEmitter();
+        this.blured = new EventEmitter();
         this.empty = true;
         this.isFocused = false;
         this._unlisteners = [];
@@ -985,12 +985,12 @@ var FateInputComponent = /** @class */ (function () {
             // On focus we restore it
             _this.restoreSelection();
             _this.isFocused = true;
-            _this.focus.emit();
+            _this.focused.emit();
         });
         this.unlisteners = this.renderer.listen(this.editTarget, 'blur', function (event) {
             console.debug('(' + _this.uiId + ') blur');
             _this.isFocused = false;
-            _this.blur.emit();
+            _this.blured.emit();
             _this.saveSelection();
             if (_this.dropdownComponent) {
                 setTimeout(function () {
@@ -1096,8 +1096,16 @@ var FateInputComponent = /** @class */ (function () {
         // const style: CSSStyleDeclaration = window.getComputedStyle(this.editTarget);
         this.renderer.setStyle(this.editTarget, 'min-height', this.getHeight(2));
         if (this.initialFocus) {
-            Promise.resolve(null).then(function () { return _this.editTarget.focus(); });
+            this.focus();
         }
+    };
+    FateInputComponent.prototype.focus = function () {
+        var _this = this;
+        Promise.resolve(null).then(function () { return _this.editTarget.focus(); });
+    };
+    FateInputComponent.prototype.blur = function () {
+        var _this = this;
+        Promise.resolve(null).then(function () { return _this.editTarget.blur(); });
     };
     FateInputComponent.prototype.ngOnChanges = function (changes) {
         if (changes.uiId) {
@@ -1346,10 +1354,10 @@ var FateInputComponent = /** @class */ (function () {
     ], FateInputComponent.prototype, "initialFocus", void 0);
     __decorate([
         Output()
-    ], FateInputComponent.prototype, "focus", void 0);
+    ], FateInputComponent.prototype, "focused", void 0);
     __decorate([
         Output()
-    ], FateInputComponent.prototype, "blur", void 0);
+    ], FateInputComponent.prototype, "blured", void 0);
     __decorate([
         ViewChild('dropdown', {
             read: ViewContainerRef,

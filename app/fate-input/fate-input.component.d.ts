@@ -19,8 +19,8 @@ export declare class FateInputComponent implements ControlValueAccessor, OnChang
     customClass: string;
     placeholder: string;
     initialFocus: boolean;
-    focus: EventEmitter<void>;
-    blur: EventEmitter<void>;
+    focused: EventEmitter<void>;
+    blured: EventEmitter<void>;
     dropdownPostionTop: string;
     dropdownPostionLeft: string;
     inlineAction: any;
@@ -39,6 +39,8 @@ export declare class FateInputComponent implements ControlValueAccessor, OnChang
     private reactToChanges;
     ngOnInit(): void;
     ngAfterViewInit(): void;
+    focus(): void;
+    blur(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
     protected computeHeight(): void;
